@@ -1,7 +1,7 @@
 /* global juke */
 'use strict';
 
-juke.controller('AlbumCtrl', function ($scope, $http, $rootScope, $log, StatsFactory, GettingTheAlbums) {
+juke.controller('AlbumCtrl', function ($scope, $http, $rootScope, $log, StatsFactory, GettingTheAlbums, PlayerFactory) {
 
   // load our initial data
   GettingTheAlbums.fetchAll()
@@ -27,27 +27,13 @@ juke.controller('AlbumCtrl', function ($scope, $http, $rootScope, $log, StatsFac
 
   // main toggle
   $scope.toggle = function (song) {
-    if ($scope.playing && song === $scope.currentSong) {
-      $rootScope.$broadcast('pause');
+    if (song === PlayerFactory.getCurrentSong()) {
+      if (PlayerFactory.isPlaying()) PlayerFactory.pause();
+      else PlayerFactory.resume();
     } else {
-      $rootScope.$broadcast('play', song);
+      PlayerFactory.start(song);
     }
   };
-
-  // incoming events (from Player, toggle, or skip)
-  $scope.$on('pause', pause);
-  $scope.$on('play', play);
-  $scope.$on('next', next);
-  $scope.$on('prev', prev);
-
-  // functionality
-  function pause () {
-    $scope.playing = false;
-  }
-  function play (event, song) {
-    $scope.playing = true;
-    $scope.currentSong = song;
-  }
 
   // a "true" modulo that wraps negative to the top of the range
   function mod (num, m) { return ((num % m) + m) % m; }
@@ -79,7 +65,7 @@ juke.controller('MultiAlbumCtrl', function ($scope, $log, GettingTheAlbums, $q){
       album.imageUrl = 'api/albums/' + album.id + '/image';
       album.numSongs = album.songs.length;
     });
-    
+
     $scope.allTheAlbums = albums;
   })
   .catch($log.error);
