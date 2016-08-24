@@ -49,7 +49,7 @@ router.get('/:songId/image', function (req, res, next) {
   musicMetadata(open(req.song.url), function (err, metadata) {
     if (err) { return next(err) }
     const pic = metadata.picture[0]
-    pic? res
+    pic ? res
       .set('Content-Type', mime.lookup(pic.format))
       .send(pic.data)
       : res.redirect('/default-album.jpg')

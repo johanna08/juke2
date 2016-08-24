@@ -56,6 +56,22 @@
             </tbody>
           </table>
         </div>
+        <div ng-controller="MultiAlbumCtrl" ng-show="true">
+          <h3>Albums</h3>
+          <div class="row">
+            <div class="col-xs-4" ng-repeat="album in allTheAlbums">
+              <a class="thumbnail" href="#">
+                <img ng-src="{{ album.imageUrl }}">
+                <div class="caption">
+                  <h5>
+                    <span>{{ album.name }}</span>
+                  </h5>
+                  <small>{{ album.numSongs }} songs</small>
+                </div>
+              </a>
+            </div>
+          </div>
+        </div>
       </div>
 
       <footer>

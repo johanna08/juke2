@@ -28,18 +28,12 @@ juke.factory('GettingTheAlbums', function($http){
       })
       .then(function (albums) {
         return albums
-        // return $http.get('/api/albums/')
       })
-      // .then(function (res) {
-      //   console.log("THIS ALBUMS", res.data)
-      //   return res.data;
-      // })
     },
-    fetchById: function(index, albumId){
+    fetchById: function(albumId){
       return $http.get('/api/albums/' + albumId)
       .then(function (res) { return res.data; })
       .then(function (albums) {
-        console.log("ID", albums)
         return $http.get('/api/albums/' + albumId); // temp: get one
       })
       .then(function (res) {

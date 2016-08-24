@@ -65,5 +65,24 @@ juke.controller('AlbumCtrl', function ($scope, $http, $rootScope, $log, StatsFac
 
 });
 
+juke.controller('MultiAlbumCtrl', function ($scope, $log, GettingTheAlbums, $q){
 
+  GettingTheAlbums.fetchAll()
+  .then(function (stillGettingThem) {
+    var promiseArr = stillGettingThem.map(function(oneAlbum) {
+      return GettingTheAlbums.fetchById(oneAlbum.id)
+    });
+    return $q.all(promiseArr);
+  })
+  .then(function(albums){
+    albums.forEach(function(album){
+      album.imageUrl = 'api/albums/' + album.id + '/image';
+      album.numSongs = album.songs.length;
+    });
+    
+    $scope.allTheAlbums = albums;
+  })
+  .catch($log.error);
+      
+})
 
