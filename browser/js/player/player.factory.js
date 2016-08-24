@@ -4,14 +4,10 @@ juke.factory('PlayerFactory', function($rootScope){
 	var audio = document.createElement('audio');
 	audio.addEventListener('ended', function () {
 	    PlayerFunctionality.next();
-	//     // $scope.$apply(); // DO THIS => // triggers $rootScope.$digest, which hits other scopes
 			$rootScope.digest();
-	//     $scope.$evalAsync(); // DON'T NEED YOU // likely best, schedules digest if none happening
 	  });
 	audio.addEventListener('timeupdate', function () {
-	//     $scope.progress = 100 * audio.currentTime / audio.duration;
 			$rootScope.$digest(); // re-computes current template only (this scope)
-	//     $scope.$evalAsync(); // DON'T NEED YOU // likely best, schedules digest if none happening
 	});
   	let PlayerFunctionality = {
   		playing: false,
@@ -20,11 +16,8 @@ juke.factory('PlayerFactory', function($rootScope){
 		  	this.pause();
 		    this.playing = true;
 		    // resume current song
-		    // if (song === this.currentSong) return audio.play();
 		    this.currentSong = song;
-		    this.songList = songList;
-		    // enable loading new song
-		    // $scope.currentSong = song;
+		    this.songList = songList;		  
 		    audio.src = song.audioUrl;
 		    audio.load();
 		    audio.play();
@@ -54,7 +47,7 @@ juke.factory('PlayerFactory', function($rootScope){
   			this.start(this.songList[nextSongIndex])
   		},
   		getProgress: function(){
-  			this.progress = 100 * audio.currentTime / audio.duration;
+  			this.progress = audio.currentTime / audio.duration || 0;
   			console.log(this.progress);
   			return this.progress;
   		}
