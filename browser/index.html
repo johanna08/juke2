@@ -8,6 +8,7 @@
     <script src="/angular/angular.js" defer></script>
     <script src="/js/module.js" defer></script>
     <script src="/js/album/album.controllers.js" defer></script>
+    <script src="/js/album/album.factories.js" defer></script>
     <script src="/js/player/player.controller.js" defer></script>
     <script src="/js/player/player.factory.js" defer></script>
   </head>
@@ -26,11 +27,12 @@
       </div>
 
       <div class="col-xs-10">
-        <div class="album" ng-controller="AlbumCtrl">
+        <div class="album" ng-controller="AlbumCtrl" ng-show="false">
           <p>
             <h3>{{ album.name }}</h3>
             <img ng-src="{{ album.imageUrl }}" class="img-thumbnail">
           </p>
+          <div ng-cloak>Duration: {{ fullDuration }}m</div>
           <table class='table'>
             <thead>
               <tr>
